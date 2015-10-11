@@ -12,9 +12,9 @@ I wanted to integrate the excellent [WaveDrom][1] timing diagram tool within the
 Using the StackEdit user extension, a fenced code block is used which has the type of `wavedrom`. This code block is replaced with a `<script>` block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom `processAll()` function or with the user extension for the preview.
 
 ### Current Version and Limitations
-Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`. Since WaveDrom doesn't have a https:// CDN, you will need to force your browser to allow unsafe scripts for the for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.
+Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`. Since WaveDrom doesn't have a https:// CDN, you will need to force your browser to allow unsafe scripts for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.
 
-The current WaveDrom code base does not provide convenient methods for rendering individual graphs and so some of the source from the WaveDrom base was required to be copied into the user extension in order to get the live preview to work efficiently.
+The current WaveDrom codebase does not provide convenient methods for rendering individual graphs and some of the source from the WaveDrom base was required to be copied into the user extension in order to get the live preview to work efficiently.
 
 ###Installation
 #### User Extension Code
