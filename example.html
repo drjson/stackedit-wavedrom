@@ -65,6 +65,8 @@
 
 <p>The current WaveDrom codebase does not provide convenient methods for rendering individual graphs and some of the source from the WaveDrom base was required to be copied into the user extension in order to get the live preview to work efficiently.</p>
 
+
+
 <h3 id="installation">Installation</h3>
 
 
@@ -270,5 +272,30 @@ foot: {text:
     ['tspan', {'baseline-shift':'super'}, 'super ']
   ],tock:-5
 }
-}</script></pre></div></body>
+}</script></pre>
+
+
+
+<h4 id="logic-diagrams">Logic Diagrams</h4>
+
+
+
+<pre class="prettyprint"><script type="WaveDrom">{ assign:[
+  ["out",
+    ["|",
+      ["&", ["~", "a"], "b"],
+      ["&", ["~", "b"], "a"]
+    ]
+  ],
+  ["y", ["~", "x"]],
+  ["y", ["=", "x"]],
+  ["y", ["&", "a" ,"b"]],
+  ["y", ["~&", "a", "b"]],
+  ["y", ["|", "a", "b"]],
+  ["y", ["~|", "a", "b"]],
+  ["y", ["^", "a", "b"]],  
+  ["y", ["~^", "a", "b"]],
+  ["y", ["+", "a", "b"]],
+  ["y", ["*", "a", "b"]]
+]}</script></pre></div></body>
 </html>
