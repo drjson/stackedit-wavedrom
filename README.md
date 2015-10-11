@@ -1,5 +1,6 @@
 # Making StackEdit Work With WaveDrom
-A user extension hack for StackEdit.
+A user extension hack for StackEdit. [View on StackEdit](https://stackedit.io/viewer#!url=https://raw.github.com/drjson/stackedit-wavedrom/master/README.md).
+![enter image description here](https://raw.githubusercontent.com/drjson/stackedit-wavedrom/master/screenshot.png "Example Screenshot")
 
 [TOC]
 
