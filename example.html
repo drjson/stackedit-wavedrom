@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WaveDrom + StackEdit</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
+<script src="http://wavedrom.com/WaveDrom.js" type="text/javascript"></script>
+</head>
+<body onLoad="WaveDrom.ProcessAll()"><div class="container"><h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
+
+<p>A user extension hack for StackEdit.</p>
+
+<p><div class="toc">
+<ul>
+<li><a href="#making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</a><ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#implementation">Implementation</a><ul>
+<li><a href="#theory-of-operation">Theory of Operation</a></li>
+<li><a href="#current-version-and-limitations">Current Version and Limitations</a></li>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#user-extension-code">User Extension Code</a></li>
+<li><a href="#template-output-updates">Template Output Updates</a></li>
+</ul>
+</li>
+<li><a href="#examples">Examples</a><ul>
+<li><a href="#simple-example">Simple Example</a></li>
+<li><a href="#spacers-and-gaps">Spacers and Gaps</a></li>
+<li><a href="#ddr-timing">DDR Timing</a></li>
+<li><a href="#headers-footers-and-indexes">Headers, Footers, and Indexes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+<h2 id="overview">Overview</h2>
+
+<p>I wanted to integrate the excellent <a href="http://www.wavedrom.com" title="WaveDrom">WaveDrom</a> timing diagram tool within the <a href="http://www.stackedit.io" title="StackEdit">StackEdit</a> tool for documentation of hardware timing. This documents the required settings and items for getting it to work. Open this document in StackEdit to confirm operation of the plugin by viewing the included examples.</p>
+
+<h2 id="implementation">Implementation</h2>
+
+
+
+<h3 id="theory-of-operation">Theory of Operation</h3>
+
+<p>Using the StackEdit user extension, a fenced code block is used which has the type of <code>wavedrom</code>. This code block is replaced with a <code>&lt;script&gt;</code> block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom <code>processAll()</code> function or with the user extension for the preview.</p>
+
+<h3 id="current-version-and-limitations">Current Version and Limitations</h3>
+
+<p>Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of <code>wavedrom</code>. Since WaveDrom doesn’t have a https:// CDN, you will need to force your browser to allow unsafe scripts for the for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.</p>
+
+<p>The current WaveDrom code base does not provide convenient methods for rendering individual graphs and so some of the source from the WaveDrom base was required to be copied into the user extension in order to get the live preview to work efficiently.</p>
+
+
+
+<h3 id="installation">Installation</h3>
+
+<h4 id="user-extension-code">User Extension Code</h4>
+
+<p>Copy the following code into the user extension area of StackEdit under <code>Settings-&gt;Extensions-&gt;UserCustom Extension</code>.</p>
+
+<pre class="prettyprint"><code class="language-javascript hljs "><span class="hljs-comment">// create &lt;script&gt;</span>
+<span class="hljs-keyword">var</span> waveDromScript = document.createElement(<span class="hljs-string">'script'</span>);
+waveDromScript.src = <span class="hljs-string">'http://wavedrom.com/WaveDrom.js'</span>;
+
+<span class="hljs-keyword">var</span> waveDromTheme = document.createElement(<span class="hljs-string">'script'</span>);
+waveDromTheme.src = <span class="hljs-string">'http://wavedrom.com/skins/default.js'</span>;
+
+<span class="hljs-comment">// append &lt;script&gt;</span>
+<span class="hljs-keyword">var</span> firstScript = document.getElementsByTagName(<span class="hljs-string">'script'</span>)[<span class="hljs-number">0</span>];
+firstScript.parentNode.insertBefore(waveDromTheme, firstScript);
+firstScript.parentNode.insertBefore(waveDromScript, firstScript);
+
+<span class="hljs-comment">// Setup parsing</span>
+userCustom.onPagedownConfigure = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(editor)</span> {</span>
+    <span class="hljs-keyword">var</span> previewContentsElt = document.getElementById(<span class="hljs-string">'preview-contents'</span>);
+    editor.hooks.chain(<span class="hljs-string">"onPreviewRefresh"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        $(previewContentsElt)
+            .find(<span class="hljs-string">'.prettyprint &gt; .language-wavedrom'</span>)
+            .each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> 
+        {</span>
+            $(<span class="hljs-keyword">this</span>).replaceWith(<span class="hljs-string">"&lt;script type=\"WaveDrom\"&gt;"</span>
+                                  + <span class="hljs-keyword">this</span>.textContent
+                                  + <span class="hljs-string">"&lt;/script&gt;"</span>);
+        });
+    });
+};
+
+<span class="hljs-comment">// Borrow these snippets from the wavedrom source since they aren't publicly available in the API, but are required to call RenderWaveForm.</span>
+
+<span class="hljs-keyword">var</span> lane = {
+    xs     : <span class="hljs-number">10</span>,    <span class="hljs-comment">// tmpgraphlane0.width</span>
+    ys     : <span class="hljs-number">10</span>,    <span class="hljs-comment">// tmpgraphlane0.height</span>
+    xg     : <span class="hljs-number">120</span>,   <span class="hljs-comment">// tmpgraphlane0.x</span>
+    <span class="hljs-comment">// yg     : 0,     // head gap</span>
+    yh0    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// head gap title</span>
+    yh1    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// head gap</span>
+    yf0    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// foot gap</span>
+    yf1    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// foot gap</span>
+    y0     : <span class="hljs-number">5</span>,     <span class="hljs-comment">// tmpgraphlane0.y</span>
+    yo     : <span class="hljs-number">30</span>,    <span class="hljs-comment">// tmpgraphlane1.y - y0;</span>
+    tgo    : -<span class="hljs-number">10</span>,   <span class="hljs-comment">// tmptextlane0.x - xg;</span>
+    ym     : <span class="hljs-number">150</span>,    <span class="hljs-comment">// tmptextlane0.y - y0</span>
+    xlabel : <span class="hljs-number">6</span>,     <span class="hljs-comment">// tmptextlabel.x - xg;</span>
+    xmax   : <span class="hljs-number">1</span>,
+    scale  : <span class="hljs-number">1</span>,
+    head   : {},
+    foot   : {}
+};
+
+<span class="hljs-comment">// From eva.js in wavedrom</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eva</span> <span class="hljs-params">(text)</span> {</span>
+    <span class="hljs-keyword">var</span> TheTextBox, source;
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">erra</span> <span class="hljs-params">(e)</span> {</span>
+        <span class="hljs-keyword">return</span> { signal: [{ name: [<span class="hljs-string">'tspan'</span>, [<span class="hljs-string">'tspan'</span>, {<span class="hljs-keyword">class</span>:<span class="hljs-string">'error h5'</span>}, <span class="hljs-string">'Error: '</span>], e.message] }]};
+    }
+
+    <span class="hljs-keyword">try</span> { 
+        source = <span class="hljs-built_in">eval</span>(<span class="hljs-string">'('</span> + text + <span class="hljs-string">')'</span>); 
+    } <span class="hljs-keyword">catch</span> (e) {
+        <span class="hljs-keyword">return</span> erra(e); 
+    }
+
+
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.toString.call(source) !== <span class="hljs-string">'[object Object]'</span>) {
+        <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: The root has to be an Object: "{signal:[...]}"'</span>});
+    }
+    <span class="hljs-keyword">if</span> (source.signal) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.toString.call(source.signal) !== <span class="hljs-string">'[object Array]'</span>) {
+            <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: "signal" object has to be an Array "signal:[]"'</span>});
+        }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (source.assign) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.toString.call(source.assign) !== <span class="hljs-string">'[object Array]'</span>) {
+            <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: "assign" object hasto be an Array "assign:[]"'</span>});
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: "signal:[...]" or "assign:[...]" property is missing inside the root Object'</span>});
+    }
+    <span class="hljs-keyword">return</span> source;
+}
+
+<span class="hljs-comment">// Callback to update the preview pane.</span>
+userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+        <span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// Need this structure from WaveDrom source</span>
+
+        $(<span class="hljs-string">'#preview-contents script[type=WaveDrom]'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+            $(<span class="hljs-keyword">this</span>).parent().children().not(<span class="hljs-string">'script'</span>).remove();
+            $(<span class="hljs-keyword">this</span>).parent().append(<span class="hljs-string">'&lt;div id="WaveDrom_Display_'</span>+index+<span class="hljs-string">'"&gt;&lt;/div&gt;'</span>);
+            WaveDrom.RenderWaveForm(index, eva(<span class="hljs-keyword">this</span>.innerHTML), <span class="hljs-string">'WaveDrom_Display_'</span>, lane);
+            index++;
+        });
+
+
+};</code></pre>
+
+<h4 id="template-output-updates">Template Output Updates</h4>
+
+<p>Add the following to your default template (Settings-&gt;Advanced-&gt;Default Template) in the <code>&lt;head&gt;</code> tag:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://wavedrom.com/skins/default.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://wavedrom.com/WaveDrom.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
+
+<p>And add the following to the <code>&lt;body&gt;</code> tag of the template:</p>
+
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.ProcessAll()"</span>&gt;</span></code></pre>
+
+<h3 id="examples">Examples</h3>
+
+<p>Examples from <a href="http://wavedrom.com/tutorial.html">WaveDrom tutorials</a>.</p>
+
+
+
+<h4 id="simple-example">Simple Example</h4>
+
+<pre class="prettyprint"><script type="WaveDrom">{ signal : [
+  { name: "clk",  wave: "p......" },
+  { name: "bus",  wave: "x.34.5x",   data: "head body tail" },
+  { name: "wire", wave: "0.1..0." },
+  { name: "additional", wave: "0...1.." }
+]}</script></pre>
+
+
+
+<h4 id="spacers-and-gaps">Spacers and Gaps</h4>
+
+<pre class="prettyprint"><script type="WaveDrom">{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
+  {},
+  { name: "Acknowledge", wave: "1.....|01." }
+]}</script></pre>
+
+
+
+<h4 id="ddr-timing">DDR Timing</h4>
+
+<pre class="prettyprint"><script type="WaveDrom">{ signal: [
+  { name: "CK",   wave: "P.......",                                              period: 2  },
+  { name: "CMD",  wave: "x.3x=x4x=x=x=x=x", data: "RAS NOP CAS NOP NOP NOP NOP", phase: 0.5 },
+  { name: "ADDR", wave: "x.=x..=x........", data: "ROW COL",                     phase: 0.5 },
+  { name: "DQS",  wave: "z.......0.1010z." },
+  { name: "DQ",   wave: "z.........5555z.", data: "D0 D1 D2 D3" }
+]}</script></pre>
+
+
+
+<h4 id="headers-footers-and-indexes">Headers, Footers, and Indexes</h4>
+
+<pre class="prettyprint"><script type="WaveDrom">{signal: [
+  {name:'clk', wave: 'p.....PPPPp....' },
+  {name:'dat', wave: 'x....2345x.....', data: 'a b c d' },
+  {name:'req', wave: '0....1...0.....' }
+],
+head: {text:
+  ['tspan',
+    ['tspan', {class:'error h1'}, 'error '],
+    ['tspan', {class:'warning h2'}, 'warning '],
+    ['tspan', {class:'info h3'}, 'info '],
+    ['tspan', {class:'success h4'}, 'success '],
+    ['tspan', {class:'muted h5'}, 'muted '],
+    ['tspan', {class:'h6'}, 'h6 '],
+    'default ',
+    ['tspan', {fill:'pink', 'font-weight':'bold', 'font-style':'italic'}, 'pink-bold-italic']
+  ]
+},
+foot: {text:
+  ['tspan', 'E=mc',
+    ['tspan', {dy:'-5'}, '2'],
+    ['tspan', {dy: '5'}, '. '],
+    ['tspan', {'font-size':'25'}, 'B '],
+    ['tspan', {'text-decoration':'overline'},'over '],
+    ['tspan', {'text-decoration':'underline'},'under '],
+    ['tspan', {'baseline-shift':'sub'}, 'sub '],
+    ['tspan', {'baseline-shift':'super'}, 'super ']
+  ],tock:-5
+}
+}</script></pre></div></body>
+</html>
