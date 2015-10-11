@@ -11,7 +11,8 @@
 </head>
 <body onLoad="WaveDrom.ProcessAll()"><div class="container"><h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
 
-<p>A user extension hack for StackEdit.</p>
+<p>A user extension hack for StackEdit. <a href="https://stackedit.io/viewer#!url=https://raw.github.com/drjson/stackedit-wavedrom/master/README.md">View on StackEdit</a>. <br>
+<img src="https://raw.githubusercontent.com/drjson/stackedit-wavedrom/master/screenshot.png" alt="enter image description here" title="Example Screenshot"></p>
 
 <p><div class="toc">
 <ul>
@@ -44,6 +45,8 @@
 
 <p>I wanted to integrate the excellent <a href="http://www.wavedrom.com" title="WaveDrom">WaveDrom</a> timing diagram tool within the <a href="http://www.stackedit.io" title="StackEdit">StackEdit</a> tool for documentation of hardware timing. This documents the required settings and items for getting it to work. Open this document in StackEdit to confirm operation of the plugin by viewing the included examples.</p>
 
+
+
 <h2 id="implementation">Implementation</h2>
 
 
@@ -51,6 +54,8 @@
 <h3 id="theory-of-operation">Theory of Operation</h3>
 
 <p>Using the StackEdit user extension, a fenced code block is used which has the type of <code>wavedrom</code>. This code block is replaced with a <code>&lt;script&gt;</code> block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom <code>processAll()</code> function or with the user extension for the preview.</p>
+
+
 
 <h3 id="current-version-and-limitations">Current Version and Limitations</h3>
 
@@ -62,9 +67,13 @@
 
 <h3 id="installation">Installation</h3>
 
+
+
 <h4 id="user-extension-code">User Extension Code</h4>
 
 <p>Copy the following code into the user extension area of StackEdit under <code>Settings-&gt;Extensions-&gt;UserCustom Extension</code>.</p>
+
+
 
 <pre class="prettyprint"><code class="language-javascript hljs "><span class="hljs-comment">// create &lt;script&gt;</span>
 <span class="hljs-keyword">var</span> waveDromScript = document.createElement(<span class="hljs-string">'script'</span>);
@@ -163,16 +172,24 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 };</code></pre>
 
+
+
 <h4 id="template-output-updates">Template Output Updates</h4>
 
 <p>Add the following to your default template (Settings-&gt;Advanced-&gt;Default Template) in the <code>&lt;head&gt;</code> tag:</p>
+
+
 
 <pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://wavedrom.com/skins/default.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://wavedrom.com/WaveDrom.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
 
 <p>And add the following to the <code>&lt;body&gt;</code> tag of the template:</p>
 
+
+
 <pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.ProcessAll()"</span>&gt;</span></code></pre>
+
+
 
 <h3 id="examples">Examples</h3>
 
@@ -181,6 +198,8 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 
 <h4 id="simple-example">Simple Example</h4>
+
+
 
 <pre class="prettyprint"><script type="WaveDrom">{ signal : [
   { name: "clk",  wave: "p......" },
@@ -192,6 +211,8 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 
 <h4 id="spacers-and-gaps">Spacers and Gaps</h4>
+
+
 
 <pre class="prettyprint"><script type="WaveDrom">{ signal: [
   { name: "clk",         wave: "p.....|..." },
@@ -205,6 +226,8 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 <h4 id="ddr-timing">DDR Timing</h4>
 
+
+
 <pre class="prettyprint"><script type="WaveDrom">{ signal: [
   { name: "CK",   wave: "P.......",                                              period: 2  },
   { name: "CMD",  wave: "x.3x=x4x=x=x=x=x", data: "RAS NOP CAS NOP NOP NOP NOP", phase: 0.5 },
@@ -216,6 +239,8 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 
 <h4 id="headers-footers-and-indexes">Headers, Footers, and Indexes</h4>
+
+
 
 <pre class="prettyprint"><script type="WaveDrom">{signal: [
   {name:'clk', wave: 'p.....PPPPp....' },
