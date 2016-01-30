@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WaveDrom + StackEdit</title>
-<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-<script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
-<script src="http://wavedrom.com/WaveDrom.js" type="text/javascript"></script>
-</head>
-<body onLoad="WaveDrom.ProcessAll()"><div class="container"><h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
+<h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
 
 <p>A user extension hack for StackEdit. <a href="https://stackedit.io/viewer#!url=https://raw.github.com/drjson/stackedit-wavedrom/master/README.md">View on StackEdit</a>. <br>
 <img src="https://raw.githubusercontent.com/drjson/stackedit-wavedrom/master/screenshot.png" alt="Example Screenshot" title="Example Screenshot"></p>
@@ -42,6 +31,8 @@
 </div>
 </p>
 
+
+
 <h2 id="overview">Overview</h2>
 
 <p>I wanted to integrate the excellent <a href="http://www.wavedrom.com" title="WaveDrom">WaveDrom</a> timing diagram tool within the <a href="http://www.stackedit.io" title="StackEdit">StackEdit</a> tool for documentation of hardware timing. This documents the required settings and items for getting it to work. Open this document in StackEdit to confirm operation of the plugin by viewing the included examples.</p>
@@ -61,8 +52,6 @@
 <h3 id="current-version-and-limitations">Current Version and Limitations</h3>
 
 <p>Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of <code>wavedrom</code>. Since WaveDrom doesn’t have a https:// CDN, you will need to force your browser to allow unsafe scripts for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.</p>
-
-<p>The current WaveDrom codebase does not provide convenient methods for rendering individual graphs and some of the source from the WaveDrom base was required to be copied into the user extension in order to get the live preview to work efficiently.</p>
 
 
 
@@ -103,70 +92,17 @@ userCustom.onPagedownConfigure = <span class="hljs-function"><span class="hljs-k
     });
 };
 
-<span class="hljs-comment">// Borrow these snippets from the wavedrom source since they aren't publicly available in the API, but are required to call RenderWaveForm.</span>
-
-<span class="hljs-keyword">var</span> lane = {
-    xs     : <span class="hljs-number">10</span>,    <span class="hljs-comment">// tmpgraphlane0.width</span>
-    ys     : <span class="hljs-number">10</span>,    <span class="hljs-comment">// tmpgraphlane0.height</span>
-    xg     : <span class="hljs-number">120</span>,   <span class="hljs-comment">// tmpgraphlane0.x</span>
-    <span class="hljs-comment">// yg     : 0,     // head gap</span>
-    yh0    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// head gap title</span>
-    yh1    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// head gap</span>
-    yf0    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// foot gap</span>
-    yf1    : <span class="hljs-number">0</span>,     <span class="hljs-comment">// foot gap</span>
-    y0     : <span class="hljs-number">5</span>,     <span class="hljs-comment">// tmpgraphlane0.y</span>
-    yo     : <span class="hljs-number">30</span>,    <span class="hljs-comment">// tmpgraphlane1.y - y0;</span>
-    tgo    : -<span class="hljs-number">10</span>,   <span class="hljs-comment">// tmptextlane0.x - xg;</span>
-    ym     : <span class="hljs-number">150</span>,    <span class="hljs-comment">// tmptextlane0.y - y0</span>
-    xlabel : <span class="hljs-number">6</span>,     <span class="hljs-comment">// tmptextlabel.x - xg;</span>
-    xmax   : <span class="hljs-number">1</span>,
-    scale  : <span class="hljs-number">1</span>,
-    head   : {},
-    foot   : {}
-};
-
-<span class="hljs-comment">// From eva.js in wavedrom</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eva</span> <span class="hljs-params">(text)</span> {</span>
-    <span class="hljs-keyword">var</span> TheTextBox, source;
-
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">erra</span> <span class="hljs-params">(e)</span> {</span>
-        <span class="hljs-keyword">return</span> { signal: [{ name: [<span class="hljs-string">'tspan'</span>, [<span class="hljs-string">'tspan'</span>, {<span class="hljs-keyword">class</span>:<span class="hljs-string">'error h5'</span>}, <span class="hljs-string">'Error: '</span>], e.message] }]};
-    }
-
-    <span class="hljs-keyword">try</span> { 
-        source = <span class="hljs-built_in">eval</span>(<span class="hljs-string">'('</span> + text + <span class="hljs-string">')'</span>); 
-    } <span class="hljs-keyword">catch</span> (e) {
-        <span class="hljs-keyword">return</span> erra(e); 
-    }
-
-
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.toString.call(source) !== <span class="hljs-string">'[object Object]'</span>) {
-        <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: The root has to be an Object: "{signal:[...]}"'</span>});
-    }
-    <span class="hljs-keyword">if</span> (source.signal) {
-        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.toString.call(source.signal) !== <span class="hljs-string">'[object Array]'</span>) {
-            <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: "signal" object has to be an Array "signal:[]"'</span>});
-        }
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (source.assign) {
-        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.prototype.toString.call(source.assign) !== <span class="hljs-string">'[object Array]'</span>) {
-            <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: "assign" object hasto be an Array "assign:[]"'</span>});
-        }
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">return</span> erra({ message: <span class="hljs-string">'[Semantic]: "signal:[...]" or "assign:[...]" property is missing inside the root Object'</span>});
-    }
-    <span class="hljs-keyword">return</span> source;
-}
-
 <span class="hljs-comment">// Callback to update the preview pane.</span>
 userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
         <span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>;
-        <span class="hljs-comment">// Need this structure from WaveDrom source</span>
+
 
         $(<span class="hljs-string">'#preview-contents script[type=WaveDrom]'</span>).each(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
             $(<span class="hljs-keyword">this</span>).parent().children().not(<span class="hljs-string">'script'</span>).remove();
+            $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">"id"</span>,<span class="hljs-string">"WaveDrom_JSON_"</span>+index);
+
             $(<span class="hljs-keyword">this</span>).parent().append(<span class="hljs-string">'&lt;div id="WaveDrom_Display_'</span>+index+<span class="hljs-string">'"&gt;&lt;/div&gt;'</span>);
-            WaveDrom.RenderWaveForm(index, eva(<span class="hljs-keyword">this</span>.innerHTML), <span class="hljs-string">'WaveDrom_Display_'</span>, lane);
+            WaveDrom.renderWaveForm(index, WaveDrom.eva(<span class="hljs-keyword">this</span>.id), <span class="hljs-string">'WaveDrom_Display_'</span>);
             index++;
         });
 
@@ -188,7 +124,7 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 
 
-<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.ProcessAll()"</span>&gt;</span></code></pre>
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.processAll()"</span>&gt;</span></code></pre>
 
 
 
@@ -296,5 +232,4 @@ foot: {text:
   ["y", ["~^", "a", "b"]],
   ["y", ["+", "a", "b"]],
   ["y", ["*", "a", "b"]]
-]}</script></pre></div></body>
-</html>
+]}</script></pre>
