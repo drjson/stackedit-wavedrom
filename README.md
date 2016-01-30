@@ -9,7 +9,7 @@ I wanted to integrate the excellent [WaveDrom][1] timing diagram tool within the
 
 ## Implementation
 ### Theory of Operation
-Using the StackEdit user extension, a fenced code block is used which has the type of `wavedrom`. This code block is replaced with a `<script>` block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom `processAll()` function or with the user extension for the preview.
+Using the StackEdit user extension, a fenced code block is used which has the type of `wavedrom`. This code block is replaced with a `<script>` block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom `ProcessAll()` function or with the user extension for the preview.
 
 ### Current Version and Limitations
 Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`. Since WaveDrom doesn't have a https:// CDN, you will need to force your browser to allow unsafe scripts for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.
@@ -55,7 +55,7 @@ userCustom.onPreviewFinished = function() {
 			$(this).attr("id","WaveDrom_JSON_"+index);
 			
 			$(this).parent().append('<div id="WaveDrom_Display_'+index+'"></div>');
-			WaveDrom.renderWaveForm(index, WaveDrom.eva(this.id), 'WaveDrom_Display_');
+			WaveDrom.RenderWaveForm(index, WaveDrom.eva(this.id), 'WaveDrom_Display_');
 			index++;
 		});
 		
@@ -72,7 +72,7 @@ Add the following to your default template (Settings->Advanced->Default Template
 
 And add the following to the `<body>` tag of the template:
 ```html
-<body onLoad="WaveDrom.processAll()">
+<body onLoad="WaveDrom.ProcessAll()">
 ```
 ### Examples
 Examples from [WaveDrom tutorials](http://wavedrom.com/tutorial.html).
