@@ -14,8 +14,6 @@ Using the StackEdit user extension, a fenced code block is used which has the ty
 ### Current Version and Limitations
 Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`. Since WaveDrom doesn't have a https:// CDN, you will need to force your browser to allow unsafe scripts for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.
 
-The current WaveDrom codebase does not provide convenient methods for rendering individual graphs and some of the source from the WaveDrom base was required to be copied into the user extension in order to get the live preview to work efficiently.
-
 ###Installation
 #### User Extension Code
 Copy the following code into the user extension area of StackEdit under `Settings->Extensions->UserCustom Extension`.
@@ -47,70 +45,17 @@ userCustom.onPagedownConfigure = function(editor) {
     });
 };
 
-// Borrow these snippets from the wavedrom source since they aren't publicly available in the API, but are required to call RenderWaveForm.
-
-var lane = {
-    xs     : 10,    // tmpgraphlane0.width
-    ys     : 10,    // tmpgraphlane0.height
-    xg     : 120,   // tmpgraphlane0.x
-    // yg     : 0,     // head gap
-    yh0    : 0,     // head gap title
-    yh1    : 0,     // head gap
-    yf0    : 0,     // foot gap
-    yf1    : 0,     // foot gap
-    y0     : 5,     // tmpgraphlane0.y
-    yo     : 30,    // tmpgraphlane1.y - y0;
-    tgo    : -10,   // tmptextlane0.x - xg;
-    ym     : 150,    // tmptextlane0.y - y0
-    xlabel : 6,     // tmptextlabel.x - xg;
-    xmax   : 1,
-    scale  : 1,
-    head   : {},
-    foot   : {}
-};
-
-// From eva.js in wavedrom
-function eva (text) {
-    var TheTextBox, source;
-
-    function erra (e) {
-        return { signal: [{ name: ['tspan', ['tspan', {class:'error h5'}, 'Error: '], e.message] }]};
-    }
-
-    try { 
-	    source = eval('(' + text + ')'); 
-	} catch (e) {
-		return erra(e); 
-	}
-    
-
-
-    if (Object.prototype.toString.call(source) !== '[object Object]') {
-        return erra({ message: '[Semantic]: The root has to be an Object: "{signal:[...]}"'});
-    }
-    if (source.signal) {
-        if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
-            return erra({ message: '[Semantic]: "signal" object has to be an Array "signal:[]"'});
-        }
-    } else if (source.assign) {
-        if (Object.prototype.toString.call(source.assign) !== '[object Array]') {
-            return erra({ message: '[Semantic]: "assign" object hasto be an Array "assign:[]"'});
-        }
-    } else {
-        return erra({ message: '[Semantic]: "signal:[...]" or "assign:[...]" property is missing inside the root Object'});
-    }
-    return source;
-}
-
 // Callback to update the preview pane.
 userCustom.onPreviewFinished = function() {
 		var index = 0;
-		// Need this structure from WaveDrom source
+
 
 		$('#preview-contents script[type=WaveDrom]').each(function() {
 			$(this).parent().children().not('script').remove();
+			$(this).attr("id","WaveDrom_JSON_"+index);
+			
 			$(this).parent().append('<div id="WaveDrom_Display_'+index+'"></div>');
-			WaveDrom.RenderWaveForm(index, eva(this.innerHTML), 'WaveDrom_Display_', lane);
+			WaveDrom.renderWaveForm(index, WaveDrom.eva(this.id), 'WaveDrom_Display_');
 			index++;
 		});
 		
@@ -127,7 +72,7 @@ Add the following to your default template (Settings->Advanced->Default Template
 
 And add the following to the `<body>` tag of the template:
 ```html
-<body onLoad="WaveDrom.ProcessAll()">
+<body onLoad="WaveDrom.processAll()">
 ```
 ### Examples
 Examples from [WaveDrom tutorials](http://wavedrom.com/tutorial.html).
