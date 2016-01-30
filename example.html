@@ -9,7 +9,7 @@
 <script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
 <script src="http://wavedrom.com/WaveDrom.js" type="text/javascript"></script>
 </head>
-<body onLoad="WaveDrom.processAll()"><div class="container"><h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
+<body onLoad="WaveDrom.ProcessAll()"><div class="container"><h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
 
 <p>A user extension hack for StackEdit. <a href="https://stackedit.io/viewer#!url=https://raw.github.com/drjson/stackedit-wavedrom/master/README.md">View on StackEdit</a>. <br>
 <img src="https://raw.githubusercontent.com/drjson/stackedit-wavedrom/master/screenshot.png" alt="Example Screenshot" title="Example Screenshot"></p>
@@ -56,7 +56,7 @@
 
 <h3 id="theory-of-operation">Theory of Operation</h3>
 
-<p>Using the StackEdit user extension, a fenced code block is used which has the type of <code>wavedrom</code>. This code block is replaced with a <code>&lt;script&gt;</code> block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom <code>processAll()</code> function or with the user extension for the preview.</p>
+<p>Using the StackEdit user extension, a fenced code block is used which has the type of <code>wavedrom</code>. This code block is replaced with a <code>&lt;script&gt;</code> block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom <code>ProcessAll()</code> function or with the user extension for the preview.</p>
 
 
 
@@ -113,7 +113,7 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
             $(<span class="hljs-keyword">this</span>).attr(<span class="hljs-string">"id"</span>,<span class="hljs-string">"WaveDrom_JSON_"</span>+index);
 
             $(<span class="hljs-keyword">this</span>).parent().append(<span class="hljs-string">'&lt;div id="WaveDrom_Display_'</span>+index+<span class="hljs-string">'"&gt;&lt;/div&gt;'</span>);
-            WaveDrom.renderWaveForm(index, WaveDrom.eva(<span class="hljs-keyword">this</span>.id), <span class="hljs-string">'WaveDrom_Display_'</span>);
+            WaveDrom.RenderWaveForm(index, WaveDrom.eva(<span class="hljs-keyword">this</span>.id), <span class="hljs-string">'WaveDrom_Display_'</span>);
             index++;
         });
 
@@ -135,7 +135,7 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 
 
-<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.processAll()"</span>&gt;</span></code></pre>
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.ProcessAll()"</span>&gt;</span></code></pre>
 
 
 
