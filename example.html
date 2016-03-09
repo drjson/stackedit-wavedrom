@@ -6,8 +6,8 @@
 <title>README.md</title>
 <link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-<script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
-<script src="http://wavedrom.com/WaveDrom.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js" type="text/javascript"></script></script>
 </head>
 <body onLoad="WaveDrom.ProcessAll()"><div class="container"><h1 id="making-stackedit-work-with-wavedrom">Making StackEdit Work With WaveDrom</h1>
 
@@ -62,9 +62,7 @@
 
 <h3 id="current-version-and-limitations">Current Version and Limitations</h3>
 
-<p>Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of <code>wavedrom</code>. Since WaveDrom doesn’t have a https:// CDN, you will need to force your browser to allow unsafe scripts for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.</p>
-
-
+<p>Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of <code>wavedrom</code>.  You can also use the templates and view the output in the templated HTML output.</p>
 
 <h3 id="installation">Installation</h3>
 
@@ -78,10 +76,10 @@
 
 <pre class="prettyprint"><code class="language-javascript hljs "><span class="hljs-comment">// create &lt;script&gt;</span>
 <span class="hljs-keyword">var</span> waveDromScript = document.createElement(<span class="hljs-string">'script'</span>);
-waveDromScript.src = <span class="hljs-string">'http://wavedrom.com/WaveDrom.js'</span>;
+waveDromScript.src = <span class="hljs-string">'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js'</span>;
 
 <span class="hljs-keyword">var</span> waveDromTheme = document.createElement(<span class="hljs-string">'script'</span>);
-waveDromTheme.src = <span class="hljs-string">'http://wavedrom.com/skins/default.js'</span>;
+waveDromTheme.src = <span class="hljs-string">'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js'</span>;
 
 <span class="hljs-comment">// append &lt;script&gt;</span>
 <span class="hljs-keyword">var</span> firstScript = document.getElementsByTagName(<span class="hljs-string">'script'</span>)[<span class="hljs-number">0</span>];
@@ -128,8 +126,8 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 
 
-<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://wavedrom.com/skins/default.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"http://wavedrom.com/WaveDrom.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
 
 <p>And add the following to the <code>&lt;body&gt;</code> tag of the template:</p>
 
