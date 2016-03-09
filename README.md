@@ -64,7 +64,7 @@ userCustom.onPreviewFinished = function() {
 ```
 
 #### Template Output Updates
-Add the following to your default template (Settings->Advanced->Default Template) in the `<head>` tag:
+In order to export to a standalone HTML file, add the following to the default template (`Settings->Advanced->Default Template`) in the `<head>` tag:
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js" type="text/javascript"></script>
@@ -74,6 +74,9 @@ And add the following to the `<body>` tag of the template:
 ```html
 <body onLoad="WaveDrom.ProcessAll()">
 ```
+
+When exporting, choose Template instead of HTML or Markdown. This can be combined with other custom templates.
+
 ### Examples
 Examples from [WaveDrom tutorials](http://wavedrom.com/tutorial.html).
 
