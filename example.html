@@ -122,9 +122,7 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 <h4 id="template-output-updates">Template Output Updates</h4>
 
-<p>Add the following to your default template (Settings-&gt;Advanced-&gt;Default Template) in the <code>&lt;head&gt;</code> tag:</p>
-
-
+<p>In order to export to a standalone HTML file, add the following to the default template (<code>Settings-&gt;Advanced-&gt;Default Template</code>) in the <code>&lt;head&gt;</code> tag:</p>
 
 <pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js"</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></code></pre>
@@ -135,7 +133,7 @@ userCustom.onPreviewFinished = <span class="hljs-function"><span class="hljs-key
 
 <pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">body</span> <span class="hljs-attribute">onLoad</span>=<span class="hljs-value">"WaveDrom.ProcessAll()"</span>&gt;</span></code></pre>
 
-
+<p>When exporting, choose Template instead of HTML or Markdown. This can be combined with other custom templates.</p>
 
 <h3 id="examples">Examples</h3>
 
