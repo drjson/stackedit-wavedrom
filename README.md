@@ -12,7 +12,7 @@ I wanted to integrate the excellent [WaveDrom][1] timing diagram tool within the
 Using the StackEdit user extension, a fenced code block is used which has the type of `wavedrom`. This code block is replaced with a `<script>` block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom `ProcessAll()` function or with the user extension for the preview.
 
 ### Current Version and Limitations
-Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`. Since WaveDrom doesn't have a https:// CDN, you will need to force your browser to allow unsafe scripts for the preview to work. It may require a refresh of the browser window to have the WaveDrom graphs generated. You can also use the templates and view the output in the templated HTML output.
+Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`.  You can also use the templates and view the output in the templated HTML output.
 
 ###Installation
 #### User Extension Code
@@ -20,10 +20,10 @@ Copy the following code into the user extension area of StackEdit under `Setting
 ```javascript
 // create <script>
 var waveDromScript = document.createElement('script');
-waveDromScript.src = 'http://wavedrom.com/WaveDrom.js';
+waveDromScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js';
 
 var waveDromTheme = document.createElement('script');
-waveDromTheme.src = 'http://wavedrom.com/skins/default.js';
+waveDromTheme.src = 'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js';
 
 // append <script>
 var firstScript = document.getElementsByTagName('script')[0];
@@ -66,8 +66,8 @@ userCustom.onPreviewFinished = function() {
 #### Template Output Updates
 Add the following to your default template (Settings->Advanced->Default Template) in the `<head>` tag:
 ```html
-<script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
-<script src="http://wavedrom.com/WaveDrom.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js" type="text/javascript"></script>
 ```
 
 And add the following to the `<body>` tag of the template:
