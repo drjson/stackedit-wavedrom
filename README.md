@@ -20,10 +20,10 @@ Copy the following code into the user extension area of StackEdit under `Setting
 ```javascript
 // create <script>
 var waveDromScript = document.createElement('script');
-waveDromScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js';
+waveDromScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/wavedrom.js';
 
 var waveDromTheme = document.createElement('script');
-waveDromTheme.src = 'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js';
+waveDromTheme.src = 'https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/skins/default.js';
 
 // append <script>
 var firstScript = document.getElementsByTagName('script')[0];
@@ -66,8 +66,8 @@ userCustom.onPreviewFinished = function() {
 #### Template Output Updates
 In order to export to a standalone HTML file, add the following to the default template (`Settings->Advanced->Default Template`) in the `<head>` tag:
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/wavedrom.js" type="text/javascript"></script>
 ```
 
 And add the following to the `<body>` tag of the template:
