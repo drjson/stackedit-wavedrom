@@ -183,5 +183,5 @@ Examples from [WaveDrom tutorials](http://wavedrom.com/tutorial.html).
     ]}
     ```
 
-[1]: http://www.wavedrom.com "WaveDrom"
-[2]: http://www.stackedit.io "StackEdit"
+[1]: http://wavedrom.com "WaveDrom"
+[2]: http://stackedit.io "StackEdit"
