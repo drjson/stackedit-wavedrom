@@ -14,7 +14,7 @@ Using the StackEdit user extension, a fenced code block is used which has the ty
 ### Current Version and Limitations
 Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`.  You can also use the templates and view the output in the templated HTML output.
 
-###Installation
+### Installation
 #### User Extension Code
 Copy the following code into the user extension area of StackEdit under `Settings->Extensions->UserCustom Extension`.
 ```javascript
