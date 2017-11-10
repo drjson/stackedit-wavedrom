@@ -12,7 +12,7 @@ I wanted to integrate the excellent [WaveDrom][1] timing diagram tool within the
 Using the StackEdit user extension, a fenced code block is used which has the type of `wavedrom`. This code block is replaced with a `<script>` block compatible with WaveDrom during the editor output generation. In the case of exporting to HTML template, this is compatible with the WaveDrom `ProcessAll()` function or with the user extension for the preview.
 
 ### Current Version and Limitations
-Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`.  You can also use the templates and view the output in the templated HTML output.
+Currently the preview and export is working with a custom user extension by utilizing the fencing code blocks with a type of `wavedrom`.  You can also use the templates and view the output in the templated HTML output. This plugin works with StackEdit version 4.
 
 ### Installation
 #### User Extension Code
@@ -66,8 +66,8 @@ userCustom.onPreviewFinished = function() {
 #### Template Output Updates
 In order to export to a standalone HTML file, add the following to the default template (`Settings->Advanced->Default Template`) in the `<head>` tag:
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/skins/default.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/wavedrom.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.6.2/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.6.2/wavedrom.js" type="text/javascript"></script>
 ```
 
 And add the following to the `<body>` tag of the template:
